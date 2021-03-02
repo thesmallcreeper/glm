@@ -30,7 +30,7 @@ namespace glm
 	(
 		vec<3, T, Q> const& orig, vec<3, T, Q> const& dir,
 		vec<3, T, Q> const& vert0, vec<3, T, Q> const& vert1, vec<3, T, Q> const& vert2,
-		vec<2, T, Q>& baryPosition, T& distance
+		vec<2, T, Q>& baryPosition, T& distance, bool& itBackfaces
 	)
 	{
 		// find vectors for two edges sharing vert0
@@ -62,6 +62,8 @@ namespace glm
 			baryPosition.y = glm::dot(dir, Perpendicular);
 			if((baryPosition.y < static_cast<T>(0)) || ((baryPosition.x + baryPosition.y) > det))
 				return false;
+
+			itBackfaces = false;
 		}
 		else if(det < -std::numeric_limits<T>::epsilon())
 		{
@@ -80,6 +82,8 @@ namespace glm
 			baryPosition.y = glm::dot(dir, Perpendicular);
 			if((baryPosition.y > static_cast<T>(0)) || (baryPosition.x + baryPosition.y < det))
 				return false;
+
+			itBackfaces = true;
 		}
 		else
 			return false; // ray is parallel to the plane of the triangle

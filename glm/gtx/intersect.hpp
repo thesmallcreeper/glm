@@ -50,7 +50,7 @@ namespace glm
 	GLM_FUNC_DECL bool intersectRayTriangle(
 		vec<3, T, Q> const& orig, vec<3, T, Q> const& dir,
 		vec<3, T, Q> const& v0, vec<3, T, Q> const& v1, vec<3, T, Q> const& v2,
-		vec<2, T, Q>& baryPosition, T& distance);
+		vec<2, T, Q>& baryPosition, T& distance, bool& itBackfaces);
 
 	//! Compute the intersection of a line and a triangle.
 	//! From GLM_GTX_intersect extension.
