@@ -115,4 +115,80 @@ namespace glm
 
 		return Inverse;
 	}
+
+
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER mat<2, 2, T, Q> adjointTranspose(mat<2, 2, T, Q> const& m)
+	{
+		mat<2, 2, T, Q> Adjoint(
+			+m[1][1],
+			-m[0][1],
+			-m[1][0],
+			+m[0][0]);
+
+		return Adjoint;
+	}
+
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER mat<3, 3, T, Q> adjointTranspose(mat<3, 3, T, Q> const& m)
+	{
+		mat<3, 3, T, Q> Adjoint;
+		Adjoint[0][0] = +(m[1][1] * m[2][2] - m[2][1] * m[1][2]);
+		Adjoint[0][1] = -(m[1][0] * m[2][2] - m[2][0] * m[1][2]);
+		Adjoint[0][2] = +(m[1][0] * m[2][1] - m[2][0] * m[1][1]);
+		Adjoint[1][0] = -(m[0][1] * m[2][2] - m[2][1] * m[0][2]);
+		Adjoint[1][1] = +(m[0][0] * m[2][2] - m[2][0] * m[0][2]);
+		Adjoint[1][2] = -(m[0][0] * m[2][1] - m[2][0] * m[0][1]);
+		Adjoint[2][0] = +(m[0][1] * m[1][2] - m[1][1] * m[0][2]);
+		Adjoint[2][1] = -(m[0][0] * m[1][2] - m[1][0] * m[0][2]);
+		Adjoint[2][2] = +(m[0][0] * m[1][1] - m[1][0] * m[0][1]);
+
+		return Adjoint;
+	}
+
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> adjointTranspose(mat<4, 4, T, Q> const& m)
+	{
+		T SubFactor00 = m[2][2] * m[3][3] - m[3][2] * m[2][3];
+		T SubFactor01 = m[2][1] * m[3][3] - m[3][1] * m[2][3];
+		T SubFactor02 = m[2][1] * m[3][2] - m[3][1] * m[2][2];
+		T SubFactor03 = m[2][0] * m[3][3] - m[3][0] * m[2][3];
+		T SubFactor04 = m[2][0] * m[3][2] - m[3][0] * m[2][2];
+		T SubFactor05 = m[2][0] * m[3][1] - m[3][0] * m[2][1];
+		T SubFactor06 = m[1][2] * m[3][3] - m[3][2] * m[1][3];
+		T SubFactor07 = m[1][1] * m[3][3] - m[3][1] * m[1][3];
+		T SubFactor08 = m[1][1] * m[3][2] - m[3][1] * m[1][2];
+		T SubFactor09 = m[1][0] * m[3][3] - m[3][0] * m[1][3];
+		T SubFactor10 = m[1][0] * m[3][2] - m[3][0] * m[1][2];
+		T SubFactor11 = m[1][0] * m[3][1] - m[3][0] * m[1][1];
+		T SubFactor12 = m[1][2] * m[2][3] - m[2][2] * m[1][3];
+		T SubFactor13 = m[1][1] * m[2][3] - m[2][1] * m[1][3];
+		T SubFactor14 = m[1][1] * m[2][2] - m[2][1] * m[1][2];
+		T SubFactor15 = m[1][0] * m[2][3] - m[2][0] * m[1][3];
+		T SubFactor16 = m[1][0] * m[2][2] - m[2][0] * m[1][2];
+		T SubFactor17 = m[1][0] * m[2][1] - m[2][0] * m[1][1];
+
+		mat<4, 4, T, Q> Adjoint;
+		Adjoint[0][0] = +(m[1][1] * SubFactor00 - m[1][2] * SubFactor01 + m[1][3] * SubFactor02);
+		Adjoint[0][1] = -(m[1][0] * SubFactor00 - m[1][2] * SubFactor03 + m[1][3] * SubFactor04);
+		Adjoint[0][2] = +(m[1][0] * SubFactor01 - m[1][1] * SubFactor03 + m[1][3] * SubFactor05);
+		Adjoint[0][3] = -(m[1][0] * SubFactor02 - m[1][1] * SubFactor04 + m[1][2] * SubFactor05);
+
+		Adjoint[1][0] = -(m[0][1] * SubFactor00 - m[0][2] * SubFactor01 + m[0][3] * SubFactor02);
+		Adjoint[1][1] = +(m[0][0] * SubFactor00 - m[0][2] * SubFactor03 + m[0][3] * SubFactor04);
+		Adjoint[1][2] = -(m[0][0] * SubFactor01 - m[0][1] * SubFactor03 + m[0][3] * SubFactor05);
+		Adjoint[1][3] = +(m[0][0] * SubFactor02 - m[0][1] * SubFactor04 + m[0][2] * SubFactor05);
+
+		Adjoint[2][0] = +(m[0][1] * SubFactor06 - m[0][2] * SubFactor07 + m[0][3] * SubFactor08);
+		Adjoint[2][1] = -(m[0][0] * SubFactor06 - m[0][2] * SubFactor09 + m[0][3] * SubFactor10);
+		Adjoint[2][2] = +(m[0][0] * SubFactor07 - m[0][1] * SubFactor09 + m[0][3] * SubFactor11);
+		Adjoint[2][3] = -(m[0][0] * SubFactor08 - m[0][1] * SubFactor10 + m[0][2] * SubFactor11);
+
+		Adjoint[3][0] = -(m[0][1] * SubFactor12 - m[0][2] * SubFactor13 + m[0][3] * SubFactor14);
+		Adjoint[3][1] = +(m[0][0] * SubFactor12 - m[0][2] * SubFactor15 + m[0][3] * SubFactor16);
+		Adjoint[3][2] = -(m[0][0] * SubFactor13 - m[0][1] * SubFactor15 + m[0][3] * SubFactor17);
+		Adjoint[3][3] = +(m[0][0] * SubFactor14 - m[0][1] * SubFactor16 + m[0][2] * SubFactor17);
+
+		return Adjoint;
+	}
 }//namespace glm
